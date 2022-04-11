@@ -1,0 +1,144 @@
+@font-face {
+    font-family: Courier New; /* Гарнитура шрифта */
+    src: url("fonts/couriernew.ttf"); /* Путь к файлу со шрифтом */
+}
+.title{
+    font-size: 50px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: #333333;
+}
+.synagogue-name{
+    font-family: Courier New;
+    font-size: 70px;
+    font-weight: bold;
+}
+.date{
+    font-family: Arial;
+    font-size: 45px;
+    color: navy;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.leftside-title{
+    font-size: 30px;
+    font-family: Tachoma;
+    color: #333333;
+}
+.white .leftside-title{
+    font-size: 30px;
+    font-family: Tachoma;
+    color: #333333;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.leftside-time{
+    font-size: 45px;
+    font-family: Arial;
+    color: #333333;
+    font-weight: bold;
+}
+.canva_wrapper{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+.marquee_wrapper{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+/*Бегущая строка*/
+.marquee{
+    /*font-size: 30px;*/
+    /*font-family: Georgia, 'Times New Roman', Times, serif;*/
+    /*color: #333333;*/
+    /*width: 450px;*/
+    /*margin-top: 30px;*/
+    /*overflow: hidden;*/
+    /*margin-top: 30px;*/
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+}
+.marquee {
+    /*display: inline-block;*/
+    /*width: max-content;*/
+
+    /*padding-left: 100%;*/
+    /*!* show the marquee just outside the paragraph *!*/
+    /*will-change: transform;*/
+    /*animation: marquee 15s linear infinite;*/
+    font-size: 30px;
+    font-weight: bold;
+    height: 100px;
+    text-align: center;
+}
+@keyframes marquee {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+.adverbs > div{
+    text-align: justify;
+}
+.ads{
+    /*margin-top: 76px;*/
+    margin-top: 96px;
+}
+.ads .advs-block{
+    /*height: 250px;*/
+    height: 263px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-weight: bold;
+}
+.advs-block .leftside-title{
+    font-size: 25px;
+}
+.ads .onlyhebrew{
+    padding-top: 17%;
+}
+.between-row-spacer{
+    margin-bottom: 25px;
+}
+.right-between-row-spacer{
+    /*margin-bottom: 12px;*/
+    margin-bottom: 6px;
+}
+.dedication{
+    font-family: 'Courier New', monospace;
+    font-size: 36px;
+    font-weight: bold;
+    color: blue;
+    text-align: center;
+    border-style: groove;
+    border-color: black;
+    /*margin-left: 30%;*/
+    /*margin-right: 30%;*/
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0 0 0 0.5);
+    border-radius: 10px;
+}
+.credits{
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    color: black;
+    text-align: right;
+    margin-top: 15px;
+}
+#footer{
+    display: flex;
+    position: absolute;
+    bottom: 16px;
+}
+.adverbs{
+    padding: 15px;
+    font-size: 30px;
+    width: 33%;
+    display: flex;
+    align-items: center;
+}

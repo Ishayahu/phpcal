@@ -1,0 +1,5 @@
+{
+  "require": {
+    "zachweix/php-zmanim": "^1.2"
+  }
+}
