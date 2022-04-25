@@ -115,13 +115,21 @@
     font-weight: bold;
     color: blue;
     text-align: center;
-    border-style: groove;
-    border-color: black;
+    /*border-style: groove;*/
+    /*border-color: black;*/
     /*margin-left: 30%;*/
     /*margin-right: 30%;*/
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0 0 0 0.5);
-    border-radius: 10px;
+    /*background-color: white;*/
+    /*box-shadow: 0 0 10px rgba(0 0 0 0.5);*/
+    /*border-radius: 10px;*/
+    border: 13px solid;
+    border-image: url("border90-83.png");
+    border-image-slice: 35 30 35 30;
+    border-image-repeat: round stretch;
+    /*position: absolute;*/
+    /*bottom: 20vh;*/
+    /*left: 30vw;*/
+    /*z-index: 99;*/
 }
 .credits{
     font-family: 'Courier New', monospace;
@@ -133,7 +141,7 @@
 #footer{
     display: flex;
     position: absolute;
-    bottom: 16px;
+    bottom: 34px;
 }
 .adverbs{
     padding: 15px;
