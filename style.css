@@ -15,8 +15,8 @@ body a:visited{
     color: blue;
 }
 #header {
-    margin: 10px 0 40px 0;
-    line-height: 1;
+    margin: 10px 0 20px 0;
+    line-height: 1.6;
 }
 #subheader{
     line-height: 1;

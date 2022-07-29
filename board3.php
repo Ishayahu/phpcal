@@ -1,7 +1,7 @@
 <html>
     <head>
         <title> MJCC </title>
-        <link rel="icon" href="old/logo-header.png" type="image/x-icon">
+<!--        <link rel="icon" href="old/logo-header.png" type="image/x-icon">-->
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="description" content="Free PHP Luach">
         <meta name="keywords" content="Free, Luach, PHP, code, Luach PHP, jewish calendar, hebrew calendar, jüdischer Kalender">
@@ -24,20 +24,24 @@
         // $geoLocation = new GeoLocation("MJCC", 55.790853, 37.608302, 186, "Europe/Moscow");
         $geoLocation = new GeoLocation("MJCC", 55.790853, 37.608302, 0, "Europe/Moscow");
         $today = new DateTime('NOW');
-                $gregorianMonthCT = date("n");
+//        $today = new DateTime('18-06-2022');
+        $tomorrow = new DateTime('tomorrow');
+        $gregorianMonthCT = date("n");
         $gregorianDayCT = date("j");
         $gregorianYearCT = date("Y");
         $gregorianDayWeekCT = date("w");
-            $day = date("j");
-            $month = date("n");
-            $year = date("Y");
-    // TODO убрать это дублирование
+        print "\n<!-- dayweek: $gregorianDayWeekCT -->\n";
+        $tomorrowGregorianMonthCT = $tomorrow->format("n");
+        $tomorrowGregorianDayCT = $tomorrow->format("j");
+        $tomorrowGregorianYearCT = $tomorrow->format("Y");
+        $day = date("j");
+        $month = date("n");
+        $year = date("Y");
 
-//        $today = new DateTime("2022-04-19T15:00");
-//        $gregorianMonthCT = '4';
-//        $gregorianDayCT = '19';
+//        $gregorianMonthCT = '7';
+//        $gregorianDayCT = '16';
 //        $gregorianYearCT = '2022';
-//        $gregorianDayWeekCT = "2";
+////        $gregorianDayWeekCT = "2";
 //            $day = $gregorianDayCT;
 //            $month = $gregorianMonthCT;
 //            $year = $gregorianYearCT;
@@ -124,6 +128,10 @@
         $jdNumberCT = gregoriantojd($gregorianMonthCT,$gregorianDayCT,$gregorianYearCT);
         $jewishDateCT = jdtojewish($jdNumberCT);
         list($jewishMonthCT, $jewishDayCT, $jewishYearCT) = explode('/', $jewishDateCT);
+        // jewish tomorrow date
+        $tomorrowJdNumberCT = gregoriantojd($tomorrowGregorianMonthCT,$tomorrowGregorianDayCT,$tomorrowGregorianYearCT);
+        $tomorrowJewishDateCT = jdtojewish($tomorrowJdNumberCT);
+        list($tomorrowJewishMonthCT, $tomorrowJewishDayCT, $tomorrowJewishYearCT) = explode('/', $tomorrowJewishDateCT);
         // Torah section on this week and motzei shabbat
         $location = searchLocation($activelocation);
         $elevation = $location[3];
@@ -258,6 +266,7 @@
         $fridayComplexZmanimCalendar = new ComplexZmanimCalendar($geoLocation, $dateFrYear, $dateFrMonth, $dateFrDay);
         $shabatComplexZmanimCalendar = new ComplexZmanimCalendar($geoLocation, $dateSbYear, $dateSbMonth, $dateSbDay);
         $jewishMonthCTName = getJewishMonthName($jewishMonthCT, $jewishYearCT);
+        $tomorrowJewishMonthCTName = getJewishMonthName($tomorrowJewishMonthCT, $tomorrowJewishYearCT);
 
     //Если сегодня канун праздника, праздник или последний день праздника:
         $erevYomTov = false;
@@ -400,8 +409,10 @@
                 ($jewishDayCT==13 && $jewishMonthCTName=='Adar') ||
                 ($jewishDayCT==3 && $jewishMonthCTName=='Tishri') ||
                 ($jewishDayCT==10 && $jewishMonthCTName=='Tevet') ||
-                ($jewishDayCT==17 && $jewishMonthCTName=='Tammuz') ||
-                ($jewishDayCT==9 && $jewishMonthCTName=='Av')
+                ($jewishDayCT==17 && $jewishMonthCTName=='Tammuz' && $gregorianDayWeekCT!=6) ||
+                ($jewishDayCT==18 && $jewishMonthCTName=='Tammuz' && $gregorianDayWeekCT==0) ||
+                ($jewishDayCT==9 && $jewishMonthCTName=='Av' && $gregorianDayWeekCT!=6) ||
+                ($jewishDayCT==10 && $jewishMonthCTName=='Av' && $gregorianDayWeekCT==0)
         ){
             $tzom=true;
         }
@@ -423,7 +434,7 @@
             </div>
             <div class="row" id="subheader">
                 <div class="col-3 date">
-                    <div>
+                    <div id="jewishDate">
                         <?php echo $jewishDayCT . " " . $heMonth[$jewishMonthCTName] . " " . $jewishYearCT; ?>
                     </div>
                 </div>
@@ -444,7 +455,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" id="mainBlock">
                 <!-- Левый блок с молитвами-->
                 <div class="col-3" id='menu' style='text-align: center;'>
                     <table align="center" cellspacing=0 cellpadding=3 width='100%'>
@@ -456,7 +467,13 @@
                                         <span>Шахарит</span><span>שחרית</span>
                                     </div>
 
-                                    <div class="leftside-time" >7:30</div>
+                                    <div class="leftside-time" >
+                                    <?php if($gregorianDayWeekCT==0){
+                                        echo "8:00";
+                                    }else{
+                                        echo "7:30";
+                                    }?>
+                                    </div>
                                 </div>
                                 <div class="between-row-spacer"></div>
                             </td>
@@ -468,7 +485,14 @@
                                     <div class="leftside-title">
                                         <span>Шахарит</span><span>שחרית</span>
                                     </div>
-                                    <div class="leftside-time" >8:30</div>
+                                    <div class="leftside-time" >
+                                        <?php if($gregorianDayWeekCT==0){
+                                            echo "9:00";
+                                        }else{
+                                            echo "8:30";
+                                        }?>
+
+                                    </div>
                                 </div>
                                 <div class="between-row-spacer"></div>
                             </td>
@@ -480,7 +504,14 @@
                                     <div class="leftside-title">
                                         <span>Шахарит</span><span>שחרית</span>
                                     </div>
-                                    <div class="leftside-time" >9:15</div>
+                                    <div class="leftside-time" >
+                                        <?php if($gregorianDayWeekCT==0){
+                                            echo "--:--";
+                                        }else{
+                                            echo "9:15";
+                                        }?>
+
+                                    </div>
                                 </div>
                                 <div class="between-row-spacer"></div>
                             </td>
@@ -626,14 +657,20 @@
                         }
                         ?>
 
-                        <!-- Маарив 2 -->
+                        <!-- Маарив 22 -->
                         <tr>
                             <td>
                                 <div class="white">
                                     <div class="leftside-title">
                                         <span>Маарив</span><span>מעריב</span>
                                     </div>
-                                    <div class="leftside-time">22:00</div>
+                                    <?php
+                                        if($firstMaarivTime[0]>=22 || ($firstMaarivTime[0]==21 && $firstMaarivTime[1]>=51)){
+                                            print '<div class="leftside-time">--:--</div>';
+                                        }else{
+                                            print '<div class="leftside-time">22:00</div>';
+                                        }
+                                    ?>
                                 </div>
                                 <div class="between-row-spacer"></div>
                             </td>
@@ -644,14 +681,24 @@
                 <div class="col-6" id='content'>
                     <div class="canva_wrapper">
                         <div id="adverbs_left" class="adverbs left">
+                            <strong style="text-align: center;width: 100%;display: block;">Айом Йом</strong>
                             <div>
-                            <?php echo (file_exists(getcwd()."/left.txt")) ? file_get_contents(getcwd()."/left.txt") : ""; ?>
+
+                            <?php
+                                //echo (file_exists(getcwd()."/left.txt")) ? file_get_contents(getcwd()."/left.txt") : "";
+                                include("haiomFromChabad.php");
+                            ?>
                             </div>
                         </div>
                         <canvas id='clock' width='550' height='550' >Извините, ваш браузер не поддерживает тег canvas</canvas>
                         <div id="adverbs_right" class="adverbs right">
+                            <strong style="text-align: center;width: 100%;display: block;">Рамбам</strong><br/>
                             <div>
-                            <?php echo (file_exists(getcwd()."/right.txt")) ? file_get_contents(getcwd()."/right.txt") : ""; ?>
+
+                            <?php
+                                //echo (file_exists(getcwd()."/right.txt")) ? file_get_contents(getcwd()."/right.txt") : "";
+                                include("rambam.php");
+                            ?>
                             </div>
                         </div>
 
@@ -660,10 +707,17 @@
                         <div class="marquee" id="marquee">
                             <?php
                             // ищем дату смены вставки на летнюю
+                            $firstDayOfNewYear = DateTime::createFromFormat('n/j/Y',jdtogregorian(jewishtojd(1,1,$jewishYearCT+1)))->setTime(0,0,0,0);
+                            $firstDayAfterPesakh = DateTime::createFromFormat('n/j/Y',jdtogregorian(jewishtojd(8,23,$jewishYearCT)))->setTime(0,0,0,0);
                             $firstDayOfPesakh = jewishtojd(8,15,$jewishYearCT);
                             $firstDayOfPesakh = jdtogregorian($firstDayOfPesakh);
-                            //        print_r($firstDayOfPesakh);
                             $firstDayOfPesakh = DateTime::createFromFormat('n/j/Y', $firstDayOfPesakh)->setTime(0,0,0,0);
+                            $secondDayOfPesakh = jewishtojd(8,16,$jewishYearCT);
+                            $secondDayOfPesakh = jdtogregorian($secondDayOfPesakh);
+                            $secondDayOfPesakh = DateTime::createFromFormat('n/j/Y', $secondDayOfPesakh)->setTime(0,0,0,0);
+                            $firstDayOfShavuot = jewishtojd(10,6,$jewishYearCT);
+                            $firstDayOfShavuot = jdtogregorian($firstDayOfShavuot);
+                            $firstDayOfShavuot = DateTime::createFromFormat('n/j/Y', $firstDayOfShavuot)->setTime(0,0,0,0);
     //                        print_r($firstDayOfPesakh);
 
                             $shminiAzeret = jewishtojd(1,22,$jewishYearCT+1);
@@ -703,6 +757,20 @@
                             if($tzom){
                                 $insertion .= "<br />АНЕЙНУ";
                             }
+                            // по умолчанию омера нет
+                            $omer = 99;
+                            if($secondDayOfPesakh <= $today && $today < $firstDayOfShavuot){
+                                $interval = $firstDayOfPesakh->diff($today);
+                                $omer = $interval->format('%a');
+                                if($omer<50){
+                                    $insertion .= "<br /><span id='omer'>Сегодня $omer день омера</span>";
+                                }
+                            }
+                            // пиркей авот
+                            if($firstDayAfterPesakh <= $today && $today < $firstDayOfNewYear && date("w", strtotime($today->format("Y-m-d")))=='6'){
+                                require "prikeyavot.php";
+                                $insertion .= "<br />".getPirkeyAvotPerek()." глава Пиркей Авот</span>";
+                            }
                             echo $insertion;
                             ?>
                         </div>
@@ -740,7 +808,7 @@
                                     <span class="leftside-title">
                                         שיעור חסידות שבת בבוקר עם&nbsp;הרב&nbsp;הראשי&nbsp;שליט''א
                                     </span>
-                                    <span class="leftside-time">9:00</span>
+                                    <span class="leftside-time">9:30</span>
                                 </div>
                             </div>
 
@@ -760,12 +828,12 @@
             </div>
             <div class="row" id='footer'>
                 <div class="col-3"></div>
-                <div class="dedication col-6">
+                <div class="col-6 dedication">
                     В память р. Исроэль Рэфоэля сына р. Арье Зеева
                 </div>
                 <div class="col-1"></div>
                 <div class="credits col-2">
-                    © Еврейский университет, Бейт Хабад Сокольники и LaSil/IT
+                    © Еврейский университет / LaSil/IT
                 </div>
 
             </div>
@@ -858,6 +926,8 @@
             ctx.stroke();
             ctx.restore();
         }
+    </script>
+    <script>
         function addYaaleVeYavo() {
             let date = new Date();
             let maarivHour = <?php echo $firstMaarivTime[0]?>;
@@ -872,6 +942,43 @@
                     if (!marquee.innerHTML.includes("ЯАЛЕ ВЕЯВО")) {
                         marquee.innerHTML += "<br />ЯАЛЕ ВЕЯВО";
                     }
+                }, diff)
+            }
+        }
+        function prepareTomorrow() {
+            let date = new Date();
+            let maarivHour = <?php echo $firstMaarivTime[0]?>;
+            let maarivMinute = <?php echo $firstMaarivTime[1]?>;
+            let curHour = date.getHours();
+            // let omerDate = '';
+            <?php
+                if(isset($interval)) {
+                    print "
+                    // secondDayOfPesakh =" . $secondDayOfPesakh->format('Y-m-d') . "\n" .
+                        "// today =" . $today->format('Y-m-d') . "\n" .
+                        "// interval =" . $interval->format('%a') . "\n" .
+                        "// days =" . $interval->d . "\n";
+                }else{
+                    print '// no omer' ."\n";
+                }
+
+            ?>
+            let curMinute = date.getMinutes();
+            // считаем разницу до маарива чтобы поставить таймер на обновление даты
+            let diff = ((maarivHour-curHour)*60+(maarivMinute-curMinute))*60*1000;
+            if (diff>0) {
+                let marquee = document.getElementById("marquee");
+                let omer = document.getElementById("omer");
+                let jewishDate = document.getElementById("jewishDate");
+                window.dateUpdate = window.setTimeout(() => {
+                    jewishDate.innerText = '<?php echo $tomorrowJewishDayCT . " " . $heMonth[$tomorrowJewishMonthCTName] . " " . $tomorrowJewishYearCT; ?>';
+                    <?php
+                    if($omer+1<50){
+                        $tomorrowOmer = $omer+1;
+                        print "omer.innerText = 'Сегодня $tomorrowOmer день омера';";
+                    }
+                    ?>
+
                 }, diff)
             }
         }
@@ -892,8 +999,12 @@
                 }, diff)
             }
         }
+    </script>
+    <!-- разделили на две части, чтобы часы в любом случае работали -->
+    <script>
         function initClock() {
             window.setInterval(updateClock, 333); //интервал обновления - треть секунды
+            prepareTomorrow();
             // ставим обработчик на рош ходеш
             <?php
             if($jewishDayCT==29 || $jewishDayCT==30){

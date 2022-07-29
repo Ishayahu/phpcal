@@ -16,7 +16,13 @@
                         <span>Рассвет</span><span>עלות השחר</span>
                     </div>
                     <div class="leftside-time">
-                        <?php echo $complexZmanimCalendar->alosHashachar->format("H:i") ?>
+                        <?php
+                        if($complexZmanimCalendar->alosHashachar){
+                            echo $complexZmanimCalendar->alosHashachar->format("H:i");
+                        }else{
+                            echo "--:--";
+                        }
+                         ?>
                     </div>
                 </div>
                 <div class="right-between-row-spacer"></div>

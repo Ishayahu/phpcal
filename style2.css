@@ -1,6 +1,12 @@
 @font-face {
     font-family: Courier New; /* Гарнитура шрифта */
-    src: url("fonts/couriernew.ttf"); /* Путь к файлу со шрифтом */
+    src: url('fonts/couriernew.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('fonts/couriernew.woff2') format('woff2'), /* Super Modern Browsers */
+        url('fonts/couriernew.woff') format('woff'), /* Pretty Modern Browsers */
+        url('fonts/couriernew.ttf')  format('truetype')/* Safari, Android, iOS */;
+}
+#mainBlock{
+    margin-bottom: 6px;
 }
 .title{
     font-size: 50px;
@@ -62,6 +68,7 @@
     /*margin-top: 30px;*/
     margin-top: 60px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 .marquee {
@@ -82,11 +89,13 @@
     100% { transform: translate(-100%, 0); }
 }
 .adverbs > div{
-    text-align: justify;
+    /*text-align: justify;*/
+    text-align: center;
+    width: 100%;
 }
 .ads{
     /*margin-top: 76px;*/
-    margin-top: 96px;
+    margin-top: 86px;
 }
 .ads .advs-block{
     /*height: 250px;*/
@@ -103,13 +112,21 @@
     padding-top: 17%;
 }
 .between-row-spacer{
-    margin-bottom: 25px;
+    margin-bottom: 24px;
 }
 .right-between-row-spacer{
     /*margin-bottom: 12px;*/
     margin-bottom: 6px;
 }
 .dedication{
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
+    border-radius: 10px;
+    /*color: #333;*/
+    /*text-align: center;*/
+    background-color: cornsilk;
+    /*margin: 5px 5px 5px 5px;*/
+    border: 1px solid #f1f1f1;
+
     font-family: 'Courier New', monospace;
     font-size: 36px;
     font-weight: bold;
@@ -122,10 +139,10 @@
     /*background-color: white;*/
     /*box-shadow: 0 0 10px rgba(0 0 0 0.5);*/
     /*border-radius: 10px;*/
-    border: 13px solid;
-    border-image: url("border90-83.png");
-    border-image-slice: 35 30 35 30;
-    border-image-repeat: round stretch;
+    /*border: 13px solid;*/
+    /*border-image: url("border90-83.png");*/
+    /*border-image-slice: 35 30 35 30;*/
+    /*border-image-repeat: round stretch;*/
     /*position: absolute;*/
     /*bottom: 20vh;*/
     /*left: 30vw;*/
@@ -135,18 +152,21 @@
     font-family: 'Courier New', monospace;
     font-size: 20px;
     color: black;
-    text-align: right;
-    margin-top: 15px;
+    /*text-align: right;*/
+    /*margin-top: 15px;*/
+    display: flex;
+    justify-content: end;
+    align-items: end;
 }
 #footer{
     display: flex;
-    position: absolute;
-    bottom: 34px;
+    /*position: absolute;*/
+    /*bottom: 34px;*/
 }
 .adverbs{
     padding: 15px;
-    font-size: 30px;
+    font-size: 22px;
     width: 33%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
 }

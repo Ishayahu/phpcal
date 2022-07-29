@@ -1,5 +1,8 @@
 {
   "require": {
-    "zachweix/php-zmanim": "^1.2"
+    "zachweix/php-zmanim": "^1.2",
+    "ext-dom": "*",
+    "ext-curl": "*",
+    "ext-libxml": "*"
   }
 }
