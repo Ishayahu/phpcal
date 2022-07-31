@@ -470,6 +470,8 @@
                                     <div class="leftside-time" >
                                     <?php if($gregorianDayWeekCT==0){
                                         echo "8:00";
+                                    }elseif ($gregorianDayWeekCT==6){
+                                        echo "--:--";
                                     }else{
                                         echo "7:30";
                                     }?>
@@ -488,6 +490,8 @@
                                     <div class="leftside-time" >
                                         <?php if($gregorianDayWeekCT==0){
                                             echo "9:00";
+                                        }elseif ($gregorianDayWeekCT==6){
+                                            echo "--:--";
                                         }else{
                                             echo "8:30";
                                         }?>
@@ -506,6 +510,8 @@
                                     </div>
                                     <div class="leftside-time" >
                                         <?php if($gregorianDayWeekCT==0){
+                                            echo "--:--";
+                                        }elseif ($gregorianDayWeekCT==6){
                                             echo "--:--";
                                         }else{
                                             echo "9:15";
@@ -535,7 +541,15 @@
                                     <div class="leftside-title">
                                         <span>Шахарит</span><span>שחרית</span>
                                     </div>
-                                    <div class="leftside-time">11:00</div>
+                                    <div class="leftside-time">
+                                        <?php
+                                            if ($gregorianDayWeekCT==6){
+                                                echo "--:--";
+                                            }else{
+                                                echo "11:00";
+                                            }
+                                        ?>
+                                    </div>
                                 </div>
                                 <div class="between-row-spacer"></div>
                             </td>
@@ -1016,6 +1030,18 @@
             ?>
         }
         onload = initClock;
+    </script>
+    <script>
+        // Подгоняем размер шрифта айом йом
+        document.addEventListener("DOMContentLoaded", ()=>{
+            let advleft = document.getElementById('adverbs_left');
+            while(advleft.offsetHeight>550){
+                let style = window.getComputedStyle(advleft, null).getPropertyValue('font-size');
+                let fontSize = parseFloat(style);
+                advleft.style.fontSize = (fontSize - 1) + 'px';
+            }
+        });
+
     </script>
     <noscript>Извините, для работы приложения нужен включённый Javascript</noscript>
 
