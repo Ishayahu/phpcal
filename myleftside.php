@@ -5,13 +5,14 @@
 * Date: 19.01.2022
 * Time: 21:33
 */
+
 ?>
 
 <table align="center" cellspacing="0" cellpadding="3" width="100%">
     <tbody>
         <tr>
             <td colspan="2">
-                <div class="white">
+                <div id="alot" class="white">
                     <div class="leftside-title">
                         <span>Рассвет</span><span>עלות השחר</span>
                     </div>
@@ -30,7 +31,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <div class="white">
+                <div id="netz" class="white">
                     <div class="leftside-title">
                         <span>Восход солнца</span><span>נץ החמה</span>
                     </div>
@@ -43,7 +44,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <div class="white">
+                <div id="shma" class="white">
                     <div class="leftside-title">
                         <span>Конец времени Шма</span><span>סוף זמן קריאת שמע</span>
                     </div>
@@ -56,7 +57,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <div class="white">
+                <div id="hatzot" class="white">
                     <div class="leftside-title">
                         <span>Полдень</span><span>חצות היום</span>
                     </div>
@@ -71,7 +72,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <div class="white">
+                <div id="shkia" class="white">
                     <div class="leftside-title">
                         <span>Заход солнца</span><span>שקיעת החמה</span>
                     </div>
@@ -84,7 +85,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <div class="white">
+                <div id="zeit" class="white">
                     <div class="leftside-title">
                         <span>Выход звезд</span><span>צאת הכוכבים</span>
                     </div>

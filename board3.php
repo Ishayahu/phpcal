@@ -14,10 +14,37 @@
     </head>
     <body>
     <?php
-        // TODO дизайн
+        // для заблюривания прошедшего времени
+        $timers = array();
+        function computeDiff($t){
+            $h = $t->format("H");
+            $m = $t->format("i");
+            $currh = date('H');
+            $currm = date('i');
+            $diff = ($h-$currh)*60+($m-$currm);
+            if ($diff>0)
+                return $diff;
+            else
+                return 0;
+        }
+        function computeDiff2($h, $m){
+            $currh = date('H');
+            $currm = date('i');
+            $diff = ($h-$currh)*60+($m-$currm);
+            if ($diff>0)
+                return $diff;
+            else
+                return 0;
+        }
+        date_default_timezone_set('Europe/Moscow');
+        $timezone = date_default_timezone_get();
+        $currh = date('H');
+        $currm = date('i');
+        print "<!-- $currh: $currm -->";
+        print "<!-- $timezone -->";
+
         // https://github.com/zachweix/PhpZmanim
         require 'vendor/autoload.php';
-
         use PhpZmanim\Zmanim;
         use PhpZmanim\Calendar\ComplexZmanimCalendar;
         use PhpZmanim\Geo\GeoLocation;
@@ -37,7 +64,8 @@
         $day = date("j");
         $month = date("n");
         $year = date("Y");
-
+        require "molad.php";
+        $shabesMevorkhim = molad();
 //        $gregorianMonthCT = '7';
 //        $gregorianDayCT = '16';
 //        $gregorianYearCT = '2022';
@@ -400,7 +428,9 @@
         $tishaBeAv=false;
         $tzom=false;
         echo "<!-- HE DAY:MONTH $jewishDayCT / $jewishMonthCTName -->";
-        if ($jewishDayCT==9 && $jewishMonthCTName=='Av'){
+        if (($jewishDayCT==9 && $jewishMonthCTName=='Av' && $gregorianDayWeekCT!=6)||
+            ($jewishDayCT==10 && $jewishMonthCTName=='Av' && $gregorianDayWeekCT==0)
+        ){
             $tishaBeAv=true;
         }
         // "Tishri", "Heshvan", "Kislev", "Tevet", "Shevat", "AdarI", "AdarII", "Nisan", "Iyyar", "Sivan", "Tammuz", "Av", "Elul"
@@ -462,7 +492,7 @@
                         <!-- Шахарис 7:30 -->
                         <tr>
                             <td>
-                                <div class="white">
+                                <div id='shakharit730' class="white">
                                     <div class="leftside-title">
                                         <span>Шахарит</span><span>שחרית</span>
                                     </div>
@@ -483,15 +513,26 @@
                         <!-- Шахарис 8:30 -->
                         <tr>
                             <td>
-                                <div class="white">
+                                <div id='shakharit830' class="white">
                                     <div class="leftside-title">
-                                        <span>Шахарит</span><span>שחרית</span>
+                                        <?php
+                                        if ($shabesMevorkhim && $gregorianDayWeekCT==6){
+                                            print "<span>Теилим</span><span>תהילים</span>";
+                                        }else{
+                                            print "<span>Шахарит</span><span>שחרית</span>";
+                                        }
+                                        ?>
                                     </div>
                                     <div class="leftside-time" >
                                         <?php if($gregorianDayWeekCT==0){
                                             echo "9:00";
                                         }elseif ($gregorianDayWeekCT==6){
-                                            echo "--:--";
+                                            if($shabesMevorkhim){
+                                                echo "8:30";
+                                            }else{
+                                                echo "--:--";
+                                            }
+
                                         }else{
                                             echo "8:30";
                                         }?>
@@ -504,7 +545,7 @@
                         <!-- Шахарис 9:15 -->
                         <tr>
                             <td>
-                                <div class="white">
+                                <div id='shakharit915' class="white">
                                     <div class="leftside-title">
                                         <span>Шахарит</span><span>שחרית</span>
                                     </div>
@@ -525,7 +566,7 @@
                         <!-- Шахарис 10 -->
                         <tr>
                             <td>
-                                <div class="white">
+                                <div id='shakharit1000' class="white">
                                     <div class="leftside-title">
                                         <span>Шахарит</span><span>שחרית</span>
                                     </div>
@@ -537,7 +578,7 @@
                         <!-- Шахарис 11 -->
                         <tr>
                             <td>
-                                <div class="white">
+                                <div id='shakharit1100' class="white">
                                     <div class="leftside-title">
                                         <span>Шахарит</span><span>שחרית</span>
                                     </div>
@@ -557,7 +598,7 @@
                         <!-- Минха ранняя -->
                         <tr>
                             <td>
-                                <div class="white">
+                                <div id='minkhagdola' class="white">
                                     <div class="leftside-title">
                                         <span>Минха Гдола</span><span>מנחה גדולה</span>
                                     </div>
@@ -573,8 +614,10 @@
                                                     $myTime = [intval($h), intval($m)];
                                                 }
                                                 echo FormatTime($myTime);
+                                                $timers['minkhagdola'] =  computeDiff2($myTime[0],$myTime[1]);
                                             } else {
                                                 echo "---";
+                                                $timers['minkhagdola'] =  computeDiff2(0);
                                             }
                                         ?>
                                     </div>
@@ -584,11 +627,12 @@
                         </tr>
                         <?php
                         if ($leto){
+                            $timers['minkha1800'] =  computeDiff2(18,0);
                             echo "
                         <!-- Минха 3 -->
                         <tr>
                             <td>
-                                <div class=\"white\">
+                                <div id='minkha1800' class=\"white\">
                                     <div class=\"leftside-title\">
                                         <span>Минха</span><span>מנחה</span>
                                     </div>
@@ -604,7 +648,7 @@
                         <!-- Минха 2 -->
                         <tr>
                             <td>
-                                <div class="white">
+                                <div id='minkhaktana' class="white">
                                     <div class="leftside-title">
                                         <span>Минха перед шкией</span><span>מנחה בזמנה</span>
                                     </div>
@@ -621,13 +665,18 @@
                                                 }
                                                 if(!$found){
                                                     echo "<!-- no record for $gregorianDayCT && $gregorianMonthCT -->";
-                                                    echo FormatTime(SubtractMinutes($sunset, 20));
+                                                    $t = SubtractMinutes($sunset, 20);
+                                                    echo FormatTime($t);
+//                                                    echo FormatTime(SubtractMinutes($sunset, 20));
+                                                    $timers['minkhaktana'] =  computeDiff2($t[0],$t[1]);
                                                 }
 
                                                 fclose($handle);
                                             }else{
                                                 echo "<!-- no file -->";
                                                 echo FormatTime(SubtractMinutes($sunset, 20));
+                                                $t = SubtractMinutes($sunset, 20);
+                                                $timers['minkhaktana'] =  computeDiff2($t[0],$t[1]);
                                             }
 
                                         ?>
@@ -639,13 +688,19 @@
                         <!-- Маарив -->
                         <tr>
                             <td>
-                                <div class="white">
+                                <div id='maariv' class="white">
                                     <div class="leftside-title">
                                         <span>Маарив самый ранний</span><span>מעריב בזמנו</span>
                                     </div>
                                     <div class="leftside-time">
                                         <?php
-                                            if ($firstMaarivTime != "") echo FormatTime($firstMaarivTime); else echo "---";
+                                            if ($firstMaarivTime != ""){
+                                                echo FormatTime($firstMaarivTime);
+                                                $timers['maariv'] =  computeDiff2($firstMaarivTime[0],$firstMaarivTime[1]);
+                                            }  else {
+                                                echo "---";
+                                                $timers['maariv'] = 0;
+                                            }
                                         ?>
                                     </div>
                                 </div>
@@ -654,11 +709,12 @@
                         </tr>
                         <?php
                         if ($maariv18){
+                            $timers['maariv'] =  computeDiff2(18,0);
                             echo "
                         <!-- Маарив 18 -->
                         <tr>
                             <td>
-                                <div class=\"white\">
+                                <div id='maariv1800' class=\"white\">
                                     <div class=\"leftside-title\">
                                         <span>Маарив</span><span>מעריב</span>
                                     </div>
@@ -674,15 +730,17 @@
                         <!-- Маарив 22 -->
                         <tr>
                             <td>
-                                <div class="white">
+                                <div id='maarivlast' class="white">
                                     <div class="leftside-title">
                                         <span>Маарив</span><span>מעריב</span>
                                     </div>
                                     <?php
                                         if($firstMaarivTime[0]>=22 || ($firstMaarivTime[0]==21 && $firstMaarivTime[1]>=51)){
                                             print '<div class="leftside-time">--:--</div>';
+                                            $timers['maarivlast'] =  0;
                                         }else{
                                             print '<div class="leftside-time">22:00</div>';
+                                            $timers['maarivlast'] =  computeDiff2(22,0);
                                         }
                                     ?>
                                 </div>
@@ -781,9 +839,16 @@
                                 }
                             }
                             // пиркей авот
-                            if($firstDayAfterPesakh <= $today && $today < $firstDayOfNewYear && date("w", strtotime($today->format("Y-m-d")))=='6'){
-                                require "prikeyavot.php";
-                                $insertion .= "<br />".getPirkeyAvotPerek()." глава Пиркей Авот</span>";
+//                            if($firstDayAfterPesakh <= $today && $today < $firstDayOfNewYear && date("w", strtotime($today->format("Y-m-d")))=='6'){
+                            if($firstDayAfterPesakh <= $today && $today < $firstDayOfNewYear && $gregorianDayWeekCT=='6'){
+                                // исключаем 9 ава - не читают пиркей авот
+                                if(!($jewishDayCT==9 && $jewishMonthCTName=='Av')) {
+                                    require "prikeyavot.php";
+                                    $insertion .= "<br />" . getPirkeyAvotPerek() . " глава Пиркей Авот</span>";
+                                }
+                            }
+                            if($shabesMevorkhim && $gregorianDayWeekCT=='6'){
+                                $insertion .= "<br />".$shabesMevorkhim;
                             }
                             echo $insertion;
                             ?>
@@ -1043,6 +1108,52 @@
         });
 
     </script>
+    <?php
+
+        if($gregorianDayWeekCT==0){
+            $timers['shakharit730'] =  computeDiff2(8,0);
+            $timers['shakharit830'] =  computeDiff2(9,0);
+            $timers['shakharit915'] = 0;
+            $timers['shakharit1100'] =  computeDiff2(11,0);
+        }elseif ($gregorianDayWeekCT==6){
+            $timers['shakharit730'] = 0;
+            $timers['shakharit830'] = 0;
+            $timers['shakharit915'] = 0;
+            $timers['shakharit1100'] = 0;
+        }else{
+            $timers['shakharit730'] =  computeDiff2(7,30);
+            $timers['shakharit830'] =  computeDiff2(8,30);
+            $timers['shakharit915'] =  computeDiff2(9,15);
+            $timers['shakharit1100'] =  computeDiff2(11,0);
+        }
+        $timers['shakharit1000'] =  computeDiff2(10,00);
+        if($complexZmanimCalendar->alosHashachar){
+            $timers['alot'] =  computeDiff($complexZmanimCalendar->alosHashachar);
+        }
+        $timers['netz'] =  computeDiff($complexZmanimCalendar->sunrise);
+        $timers['shma'] =  computeDiff($complexZmanimCalendar->sofZmanShmaBaalHatanya);
+        $timers['hatzot'] =  computeDiff($complexZmanimCalendar->chatzos);
+        $timers['shkia'] =  computeDiff($complexZmanimCalendar->sunset);
+        $timers['zeit'] =  computeDiff($complexZmanimCalendar->tzaisBaalHatanya);
+        print "<!--";
+        print_r($timers);
+        print "-->";
+
+        foreach ($timers as $key => $value){
+            if($value!==false){
+                $value = $value*60*1000;
+                print "
+                    <script>
+                        window.$key = setTimeout(()=>{
+                            let e = document.getElementById('$key');
+                            e.classList.add('gone');
+                            
+                        },$value)
+                    </script>
+                ";
+            }
+        }
+    ?>
     <noscript>Извините, для работы приложения нужен включённый Javascript</noscript>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
