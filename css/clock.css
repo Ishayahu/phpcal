@@ -1,0 +1,32 @@
+.main{
+
+}
+.record{
+    border-bottom: 1px black solid;
+}
+.record.gone{
+    border-bottom: none;
+}
+.gone{
+    position: relative;
+}
+.gone:after{
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255,255,255,0.5);
+
+}
+#footer{
+    /*position: absolute;*/
+    /*bottom: 0;*/
+    /*width: 100%;*/
+    margin-bottom: 15px;
+}
+.dedication{
+    display: flex;
+    justify-content: center;
+}

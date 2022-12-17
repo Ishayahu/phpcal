@@ -3,6 +3,7 @@
     "zachweix/php-zmanim": "^1.2",
     "ext-dom": "*",
     "ext-curl": "*",
-    "ext-libxml": "*"
+    "ext-libxml": "*",
+    "ext-calendar": "*"
   }
 }

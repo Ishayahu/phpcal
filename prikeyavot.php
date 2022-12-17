@@ -95,4 +95,4 @@ function getPirkeyAvotPerek($debug=false)
     }
     return $perekNumber;
 }
-getPirkeyAvotPerek(true);
+//getPirkeyAvotPerek(true);
