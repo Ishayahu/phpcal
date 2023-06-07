@@ -17,15 +17,21 @@ curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl_handle, CURLOPT_USERAGENT, 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:33.0) Gecko/20100101 Firefox/33.0');
 $html = curl_exec($curl_handle);
 curl_close($curl_handle);
-//print $query;
+//print $html;
 
 $dom = new DOMDocument;
 $dom->loadHTML($html);
 $xpath = new DOMXPath($dom);
 $nodes = $xpath->query("//article[contains(@class, 'yomyom')]/p");
-for($i=2; $i<count($nodes);$i++){
-    echo "<p>".$nodes[$i]->nodeValue."</p>";
-
+//print count($nodes);
+if(count($nodes)<=2){
+    for($i=0; $i<count($nodes);$i++) {
+        echo "<p>" . $nodes[$i]->nodeValue . "</p>";
+    }
+}else{
+    for($i=2; $i<count($nodes);$i++) {
+        echo "<p>" . $nodes[$i]->nodeValue . "</p>";
+    }
 }
 // handle errors
 libxml_clear_errors();

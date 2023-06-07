@@ -1,0 +1,41 @@
+@media (max-width: 500px) {
+    .main-container{
+        font-size: 10px;
+    }
+}
+@media (min-width: 500px) {
+    .main-container{
+        font-size: 16px;
+    }
+}
+
+
+.main-container{
+
+    min-height: 100vh;
+}
+.title{
+    /*height: 5%;*/
+    /*min-height: 200px;*/
+    font-size: 2rem;
+}
+.today{
+    font-size: 1.5rem;
+}
+.weekly-chapter{
+    font-size: 2.5rem;
+}
+.time-block{
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+}
+.advertisement{
+    font-size: 1.2rem;
+}
+.dedication{
+    font-size: 2rem;
+}
+.links{
+    font-size: 1rem;
+}

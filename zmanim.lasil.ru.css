@@ -23,13 +23,22 @@ body a:visited{
 }
 #menu {
     width: 25%; /* ширина меню */
-    height: auto; /* высота */
+    /*height: auto; !* высота *!*/
     float: left; /* всплытие влево */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 675px;
+
 }
 #sidebar {
     width: 25%; /* ширина сайдбара */
     height: auto; /* высота */
     float: right; /* всплытие вправо */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 675px;
 }
 #content {
     height: auto; /* высота контента */
@@ -127,7 +136,7 @@ body a:visited{
     font-family: Tachoma;
     color: #333333;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     padding-left: 5px;
     padding-right: 5px;
 }
@@ -189,14 +198,19 @@ body a:visited{
 }
 .ads .advs-block{
     /*height: 250px;*/
-    height: 263px;
+    /*height: 263px;*/
+    padding-left: 10px;
+    padding-right: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     font-weight: bold;
 }
 .advs-block .leftside-title{
-    font-size: 25px;
+    font-size: 15px;
+}
+.advs-block .leftside-time{
+    font-size: 20px;
 }
 .ads .onlyhebrew{
     padding-top: 17%;
@@ -247,6 +261,9 @@ body a:visited{
     display: flex;
     justify-content: end;
     align-items: end;
+}
+.credits div{
+    text-align: center;
 }
 #footer{
     display: flex;

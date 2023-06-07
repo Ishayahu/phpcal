@@ -8,10 +8,23 @@
 
 function getPirkeyAvotPerek($debug=false)
 {
-    $today = new DateTime('NOW');
+
     $gregorianMonthCT = date("n");
     $gregorianDayCT = date("j");
     $gregorianYearCT = date("Y");
+    if(isset($_GET['day'])) $gregorianDayCT = $_GET['day'];
+    if(isset($_GET['month'])) $gregorianMonthCT = $_GET['month'];
+    if(isset($_GET['year'])) $gregorianYearCT = $_GET['year'];
+    $today = DateTime::createFromFormat('d-m-Y', "$gregorianDayCT-$gregorianMonthCT-$gregorianYearCT");
+
+//    $d = DateTime::createFromFormat('d-m-Y', "$gregorianDayCT-$gregorianMonthCT-$gregorianYearCT");
+//    if ($d === false) {
+//        $gregorianDayWeekCT = date("w");
+//    } else {
+//        $custom_timestamp = $d->getTimestamp();
+//        $gregorianDayWeekCT = date("w", $custom_timestamp);
+//    }
+
 
     $jdNumberCT = gregoriantojd($gregorianMonthCT,$gregorianDayCT,$gregorianYearCT);
     $jewishDateCT = jdtojewish($jdNumberCT);
@@ -19,6 +32,7 @@ function getPirkeyAvotPerek($debug=false)
 
 //    $jewishYearCT = 5782;
 
+    $today_for_compare = jdtogregorian(jewishtojd(8, 23, $jewishYearCT));
     $firstDayAfterPesakh = jdtogregorian(jewishtojd(8, 23, $jewishYearCT));
     $firstDayOfShavuot = jdtogregorian(jewishtojd(10, 6, $jewishYearCT));
     $secondDayOfShavuot = jdtogregorian(jewishtojd(10, 7, $jewishYearCT));
@@ -28,34 +42,41 @@ function getPirkeyAvotPerek($debug=false)
 
     $tishaBeAv = jdtogregorian(jewishtojd(12, 9, $jewishYearCT));
     if($debug) {
-        print $firstDayAfterPesakh . "<br />";
-        print date("w", strtotime($firstDayAfterPesakh)) . "<br />";
+        print  "Первый день после Песаха $firstDayAfterPesakh<br />";
+        print "День недели первого дня после Песаха " . date("w", strtotime($firstDayAfterPesakh)) . "<br />";
 
-        print $firstDayOfShavuot . "<br />";
-        print $secondDayOfShavuot . "<br />";
-        print $firstDayOfNewYear->format('Y-m-d') . "<br />";
+        print "Первый день Шавуот $firstDayOfShavuot<br />";
+        print "Второй день Шавуот $secondDayOfShavuot<br />";
+        print "Первый день Рош аШана" . $firstDayOfNewYear->format('Y-m-d') . "<br />";
     }
     $daysToStartingShabbat = 6 - intval(date("w", strtotime($firstDayAfterPesakh)));
     $startingShabbat = new DateTime($firstDayAfterPesakh);
     $startingShabbat->add(new DateInterval("P$daysToStartingShabbat" . "D"));
     if($debug){
-        print "1 perek=" . $startingShabbat->format('Y-m-d') . "<br />";
+        print "Первую главу учат = " . $startingShabbat->format('Y-m-d') . "<br />";
     }
-    $dateDiff = date_diff(new DateTime("NOW"), $startingShabbat)->days;
+//    $dateDiff = date_diff(new DateTime("NOW"), $startingShabbat)->days;
+    $dateDiff = date_diff($today, $startingShabbat)->days;
     if ($dateDiff == 0) {
         return 1;
     }
     if($debug){
-        print "$dateDiff дней <br />";
+        print "От изучения первой главы прошло $dateDiff дней <br />";
     }
     $shabats = intdiv($dateDiff, 7);
-    if (date("w", strtotime($firstDayOfShavuot)) == '6' ||
-        date("w", strtotime($secondDayOfShavuot)) == '6') {
-        $shabats--;
+//    Если после Шавуота
+    if($today > new DateTime($secondDayOfShavuot)) {
+        if($debug){
+            print "Мы после Шавуота<br />";
+        }
+        if (date("w", strtotime($firstDayOfShavuot)) == '6' ||
+            date("w", strtotime($secondDayOfShavuot)) == '6') {
+            $shabats--;
+        }
     }
     if($debug){
 
-        print "$shabats недель <br />";
+        print "От изучения первой главы прошло $shabats недель <br />";
     }
     $perekNumber = bcmod($shabats, 6) + 1;
     // Если сейчас ПОСЛЕ 9 ава и 9 ава выпадало на шабат - вычитаем одну главу, так как

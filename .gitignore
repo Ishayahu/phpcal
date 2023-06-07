@@ -5,3 +5,6 @@ fonts/*
 minha.csv
 *.jpg
 *.txt
+zmanim.lasil.ru/.idea/*
+zmanim.lasil.ru/css/bootstrap*
+zmanim.lasil.ru/js/bootstrap*

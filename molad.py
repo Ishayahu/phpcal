@@ -6,6 +6,13 @@ import json
 year = int(sys.argv[1])
 month = int(sys.argv[2])
 a = hebrewcal.Month(year, month)
+cur_month = hebrewcal.Month(year, month-1)
 #print(a)
-r = json.dumps(a.molad_announcement())
+
+result = a.molad_announcement()
+last_day_of_month = [b for b in cur_month.iterdates()][-1].day
+result['last_day_of_month'] = last_day_of_month
+# добавляем число дней в ТЕКУЩЕМ месяце, это нужно чтобы понять, делать ли объявление
+r = json.dumps(result)
+
 print(r)

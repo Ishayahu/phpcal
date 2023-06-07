@@ -14,6 +14,7 @@
     </head>
     <body>
     <?php
+
         // для заблюривания прошедшего времени
         $timers = array();
         function computeDiff($t){
@@ -56,7 +57,24 @@
         $gregorianMonthCT = date("n");
         $gregorianDayCT = date("j");
         $gregorianYearCT = date("Y");
-        $gregorianDayWeekCT = date("w");
+        if(isset($_GET['day'])) $gregorianDayCT = $_GET['day'];
+        if(isset($_GET['month'])) $gregorianMonthCT = $_GET['month'];
+        if(isset($_GET['year'])) $gregorianYearCT = $_GET['year'];
+
+        $d = DateTime::createFromFormat('d-m-Y', "$gregorianDayCT-$gregorianMonthCT-$gregorianYearCT");
+        if ($d === false) {
+            $gregorianDayWeekCT = date("w");
+        } else {
+            $custom_timestamp = $d->getTimestamp();
+            $gregorianDayWeekCT = date("w", $custom_timestamp);
+        }
+
+
+
+
+
+
+
         print "\n<!-- dayweek: $gregorianDayWeekCT -->\n";
         $tomorrowGregorianMonthCT = $tomorrow->format("n");
         $tomorrowGregorianDayCT = $tomorrow->format("j");
@@ -64,6 +82,14 @@
         $day = date("j");
         $month = date("n");
         $year = date("Y");
+        if(isset($_GET['day'])) $day = $_GET['day'];
+        if(isset($_GET['month'])) $month = $_GET['month'];
+        if(isset($_GET['year'])) $year = $_GET['year'];
+        if(isset($_GET['weekday'])) $gregorianDayWeekCT = $_GET['weekday'];
+        $gregorianMonthCT = $month;
+        $gregorianDayCT = $day;
+        $gregorianYearCT = $year;
+
         require "molad.php";
         $shabesMevorkhim = molad();
 //        $gregorianMonthCT = '7';
@@ -115,7 +141,7 @@
                                     "Shevat", "AdarI", "AdarII", "Nisan",
                                     "Iyyar", "Sivan", "Tammuz", "Av", "Elul");
             $jewishMonthNamesNonLeap = array("Tishri", "Heshvan", "Kislev", "Tevet",
-                                       "Shevat", "Adar", "", "Nisan",
+                                       "Shevat", "Adar", "Adar", "Nisan",
                                        "Iyyar", "Sivan", "Tammuz", "Av", "Elul");
             if (isJewishLeapYear($jewishYear))
                 return $jewishMonthNamesLeap[$jewishMonth-1];
@@ -706,7 +732,7 @@
                                                     }
                                                     echo FormatTime([$shabatHours, $shabatMinutes]);
 
-                                                    $timers['maariv'] =  computeDiff2($firstMaarivTime[0],$firstMaarivTime[1]);
+                                                    $timers['maariv'] =  computeDiff2($shabatHours,$shabatMinutes);
 
                                                 }else{
                                                     echo FormatTime($firstMaarivTime);
@@ -1192,7 +1218,16 @@
         }
     ?>
     <noscript>Извините, для работы приложения нужен включённый Javascript</noscript>
+    <script>
+        document.addEventListener("DOMContentLoaded", ()=>{
+            let mainBlock = document.getElementById('mainBlock');
+            let footer = document.getElementById('footer');
+            let mainBlockTop = mainBlock.getBoundingClientRect().top;
+            let footerHeight = footer.getBoundingClientRect().height;
+            let mainBlockHeight = screen.availHeight - mainBlockTop - footerHeight;
 
+        })
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     </body>
 </html>

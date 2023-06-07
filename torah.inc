@@ -1691,6 +1691,7 @@ function getTorahSections($hebrewMonth, $hebrewDay, $hebrewYear) {
   }
 
   $torahDate = jewishtojd($hebrewMonth, $hebrewDay, $hebrewYear);
+
   if (torahGetWeekday($torahDate) == 6) {
     $bereshithDate = determineBereshith($hebrewYear);
     if ($torahDate < $bereshithDate)
